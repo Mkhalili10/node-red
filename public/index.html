@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32 LED Control</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+    button { padding: 15px 30px; font-size: 20px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>کنترل LED ESP32</h1>
+  <button onclick="setLED('on')">روشن</button>
+  <button onclick="setLED('off')">خاموش</button>
+  <p id="status"></p>
+
+  <script>
+    function setLED(state) {
+      fetch('/set-led', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ led: state })
+      })
+      .then(res => res.text())
+      .then(msg => {
+        document.getElementById('status').innerText = msg;
+      })
+      .catch(err => {
+        document.getElementById('status').innerText = 'خطا در ارسال دستور';
+      });
+    }
+  </script>
+</body>
+</html>
